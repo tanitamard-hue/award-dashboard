@@ -299,6 +299,77 @@ tbody tr:hover td{background:#f7f9ff;}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* ── LOADING OVERLAY (ขณะรอบันทึก) ── */
+.loading-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(15,45,94,.45);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+}
+.loading-overlay.show { display: flex; animation: fadeIn .2s ease; }
+.loading-box {
+  background: white; border-radius: 20px;
+  padding: 2.5rem 3rem; text-align: center;
+  box-shadow: 0 24px 64px rgba(15,45,94,.25);
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+}
+.spinner {
+  width: 52px; height: 52px;
+  border: 5px solid var(--light);
+  border-top-color: var(--blue2);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-title { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--navy); }
+.loading-sub   { font-size: 13px; color: var(--muted); }
+
+/* ── SUCCESS POPUP (เมื่อบันทึกสำเร็จ) ── */
+.popup-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(15,45,94,.4);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+}
+.popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
+.popup-box {
+  background: white; border-radius: 24px;
+  padding: 2.5rem 2.5rem 2rem;
+  box-shadow: 0 28px 72px rgba(15,45,94,.22);
+  text-align: center; max-width: 360px; width: 90%;
+  animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.8) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.popup-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #d6f5ed, #a3e8d0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; margin: 0 auto 18px;
+  animation: bounceIn .4s .1s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes bounceIn {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+.popup-title { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.popup-msg   { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 22px; }
+.popup-name  { font-weight: 600; color: var(--blue2); }
+.popup-btn {
+  width: 100%; padding: 12px;
+  background: linear-gradient(135deg, var(--teal), #12c48a);
+  color: white; border: none; border-radius: var(--rs);
+  font-family: var(--serif); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: all .18s;
+  box-shadow: 0 4px 14px rgba(14,158,118,.35);
+}
+.popup-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(14,158,118,.45); }
 </style>
 </head>
 <body>
@@ -621,6 +692,25 @@ tbody tr:hover td{background:#f7f9ff;}
   </main>
 </div>
 
+<!-- ════ LOADING OVERLAY ════ -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div class="loading-title">กำลังบันทึกข้อมูล...</div>
+    <div class="loading-sub">กรุณารอสักครู่ ระบบกำลังส่งข้อมูลไปยัง Google Sheets</div>
+  </div>
+</div>
+
+<!-- ════ SUCCESS POPUP ════ -->
+<div class="popup-overlay" id="popup-overlay" onclick="closePopup()">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-icon">✅</div>
+    <div class="popup-title">บันทึกสำเร็จแล้ว!</div>
+    <div class="popup-msg" id="popup-msg">บันทึกข้อมูลลง Google Sheets เรียบร้อยแล้วครับ</div>
+    <button class="popup-btn" onclick="closePopup()">ตกลง</button>
+  </div>
+</div>
+
 <script>
 // ════════════════════════════════════════════════════
 //  CONFIG — แก้ไขค่า 2 บรรทัดนี้ให้ตรงกับ Google Sheets ของคุณ
@@ -798,6 +888,22 @@ function getVal(selectId) {
   return sel.value.trim();
 }
 
+// ── Loading overlay ──
+function showLoading() { document.getElementById('loading-overlay').classList.add('show'); }
+function hideLoading() { document.getElementById('loading-overlay').classList.remove('show'); }
+
+// ── Success popup ──
+function showPopup(name, award) {
+  document.getElementById('popup-msg').innerHTML =
+    `บันทึกข้อมูลรางวัลของ <span class="popup-name">${name}</span><br>
+     "<span class="popup-name">${award}</span>"<br>
+     ลง Google Sheets เรียบร้อยแล้วครับ 🎉`;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+function closePopup() {
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
 // ── บันทึกข้อมูล ──
 async function submitAward() {
   const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
@@ -821,10 +927,13 @@ async function submitAward() {
     tel:      g('in-tel'),     vstatus: g('in-vstatus'), filler: ''
   };
 
-  showMsg('sub-status','info','⏳ กำลังส่งข้อมูลไปยัง Google Sheets...');
+  // แสดง loading overlay ทันที ก่อนส่งข้อมูล
+  showLoading();
+
   try {
     const res = await fetch(SCRIPT_URL + '?' + new URLSearchParams(row));
     if (!res.ok) throw new Error('HTTP ' + res.status);
+
     awards.push(mapRow({
       'ปีการศึกษา':row.year, 'ชื่อโรงเรียน':row.school, 'อำเภอ/กลุ่มเครือข่าย':row.area,
       'ประเภทผู้ได้รับรางวัล':row.rtype, 'คำนำหน้า':row.prefix, 'ชื่อ-นามสกุล':row.name,
@@ -834,10 +943,17 @@ async function submitAward() {
       'รายละเอียดผลงานโดยย่อ':row.desc, 'ประเภทหลักฐาน':row.evtype,
       'ลิงก์หลักฐาน':row.evlink, 'เบอร์โทรศัพท์':row.tel, 'สถานะการตรวจสอบ':row.vstatus
     }));
+
     updateAll();
-    showMsg('sub-status','success','✅ บันทึกลง Google Sheets สำเร็จแล้วครับ!');
+    hideLoading();
+
+    // แสดง popup สำเร็จพร้อมชื่อและรางวัลที่บันทึก
+    const displayName = (row.prefix ? row.prefix + ' ' : '') + row.name;
+    showPopup(displayName, row.awardname);
     clearForm();
+
   } catch(e) {
+    hideLoading();
     showMsg('sub-status','error','❌ ส่งข้อมูลไม่ได้: ' + e.message);
   }
 }
