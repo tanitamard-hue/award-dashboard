@@ -629,7 +629,12 @@ tbody tr:hover td{background:#f7f9ff;}
           </div>
           <div class="fg">
             <label>คำนำหน้า</label>
-            <select id="in-prefix"><option>นาย</option><option>นาง</option><option>นางสาว</option><option>ด.ช.</option><option>ด.ญ.</option><option>อื่น ๆ</option></select>
+            <select id="in-prefix" onchange="toggleOther(this,'in-prefix-other')">
+              <option>นาย</option><option>นาง</option><option>นางสาว</option>
+              <option>ด.ช.</option><option>ด.ญ.</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+            <input type="text" class="other-input" id="in-prefix-other" placeholder="โปรดระบุคำนำหน้า..."/>
           </div>
           <div class="fg">
             <label>ชื่อ-นามสกุล <span class="req">*</span></label>
@@ -952,20 +957,23 @@ function renderTable() {
       <th style="width:90px">ผลรางวัล</th><th style="width:90px">สถานะ</th>
       <th style="width:90px">หลักฐาน</th>
     </tr></thead>
-    <tbody>${f.map((a,i) => `<tr>
-      <td>${a.year}</td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${a.school}">${a.school}</td>
-      <td><span class="badge ${rtB(a.rtype)}">${a.rtype}</span></td>
-      <td style="white-space:nowrap;">${a.prefix} ${a.name}</td>
-      <td style="font-size:12px;" title="${a.awardname}">${a.awardname}</td>
-      <td><span class="badge ${lvB(a.level)}">${a.level}</span></td>
-      <td style="font-size:12px;">${a.result}</td>
-      <td><span class="badge ${stB(a.vstatus)}">${a.vstatus}</span></td>
-      <td>${a.evlink
-        ? `<button class="btn-ev" onclick="openEvidence(${awards.indexOf(a)})">📎 ดูหลักฐาน</button>`
-        : `<span class="btn-ev-none">— ไม่มี —</span>`
-      }</td>
-    </tr>`).join('')}</tbody></table>`;
+    <tbody>${f.map((a) => {
+      const realIdx = awards.indexOf(a);
+      return `<tr>
+        <td>${a.year}</td>
+        <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${a.school}">${a.school}</td>
+        <td><span class="badge ${rtB(a.rtype)}">${a.rtype}</span></td>
+        <td style="white-space:nowrap;">${a.prefix} ${a.name}</td>
+        <td style="font-size:12px;" title="${a.awardname}">${a.awardname}</td>
+        <td><span class="badge ${lvB(a.level)}">${a.level}</span></td>
+        <td style="font-size:12px;">${a.result}</td>
+        <td><span class="badge ${stB(a.vstatus)}">${a.vstatus}</span></td>
+        <td>${a.evlink && a.evlink.trim()
+          ? `<button class="btn-ev" onclick="openEvidence(${realIdx})">📎 ดูหลักฐาน</button>`
+          : `<span class="btn-ev-none">— ไม่มี —</span>`
+        }</td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
 }
 
 // ── Evidence Preview ──
@@ -1086,7 +1094,7 @@ async function submitAward() {
 
   const row = {
     year:     g('in-year'),    school:  g('in-school'),  area:   g('in-area'),
-    rtype:    g('in-rtype'),   prefix:  g('in-prefix'),  name:   g('in-name'),
+    rtype:    g('in-rtype'),   prefix:  getVal('in-prefix'),  name:   g('in-name'),
     pos:      g('in-pos'),     subject: getVal('in-subject'),
     awardname:g('in-awardname'), atype: getVal('in-atype'),
     level:    g('in-level'),   result:  getVal('in-result'),
@@ -1129,9 +1137,12 @@ async function submitAward() {
 function clearForm() {
   ['in-school','in-area','in-tel','in-name','in-pos','in-awardname',
    'in-org','in-date','in-desc','in-evlink',
-   'in-subject-other','in-atype-other','in-result-other','in-evtype-other'
+   'in-prefix-other','in-subject-other','in-atype-other','in-result-other','in-evtype-other'
   ].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.querySelectorAll('.other-input').forEach(el => el.classList.remove('show'));
+  // reset prefix กลับไปที่ค่าแรก
+  const prefix = document.getElementById('in-prefix');
+  if (prefix) prefix.selectedIndex = 0;
 }
 
 function showMsg(id, type, msg) {
@@ -1143,5 +1154,24 @@ function showMsg(id, type, msg) {
 // เริ่มโหลดข้อมูลทันทีที่หน้าเปิด
 loadData();
 </script>
+
+<!-- ════ FOOTER ════ -->
+<footer style="
+  background: linear-gradient(135deg, var(--navy), var(--blue2));
+  color: rgba(255,255,255,.75);
+  text-align: center;
+  padding: 16px 2rem;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: auto;
+">
+  <span style="color:rgba(255,255,255,.45); margin-right:6px;">⚙️</span>
+  พัฒนาระบบโดย
+  <strong style="color:#fff; margin: 0 4px;">ศน.เต็มสุข กฤตตภัคโภคิน</strong>
+  ศึกษานิเทศก์
+  <span style="color:rgba(255,255,255,.55); margin: 0 6px;">·</span>
+  สำนักงานเขตพื้นที่การศึกษาประถมศึกษาเชียงใหม่ เขต 2
+</footer>
 </body>
 </html>
