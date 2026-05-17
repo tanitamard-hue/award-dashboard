@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ผลการทดสอบระดับชาติ (O-NET) ปีการศึกษา 2568</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Kanit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:      #1A5EA8;
+  --blue-mid:  #2D7DD2;
+  --blue-lt:   #E8F2FC;
+  --blue-dk:   #0C3E74;
+  --green:     #1A8C5E;
+  --green-lt:  #E4F5EE;
+  --amber:     #C47D0E;
+  --red:       #B83232;
+  --ink:       #1C2537;
+  --ink-mid:   #4A5568;
+  --ink-lt:    #8492A6;
+  --bg:        #F0F4FA;
+  --white:     #FFFFFF;
+  --border:    #DDE3EE;
+  --radius:    12px;
+  --shadow:    0 2px 16px rgba(28,37,55,0.08);
+  --shadow-lg: 0 8px 40px rgba(28,37,55,0.14);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Sarabun', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--blue);
+  color: white;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  height: 58px;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.header-logo {
+  font-family: 'Kanit', sans-serif;
+  font-size: 15px; font-weight: 600;
+  flex: 1; line-height: 1.3;
+}
+.header-logo small { font-weight: 400; font-size: 11px; opacity: 0.7; display: block; }
+.breadcrumb {
+  display: none;
+  align-items: center;
+  gap: 6px; font-size: 13px; opacity: 0.9;
+}
+.breadcrumb span { opacity: 0.55; }
+.breadcrumb a {
+  color: white; text-decoration: none; cursor: pointer;
+  padding: 4px 8px; border-radius: 6px; transition: background .15s;
+}
+.breadcrumb a:hover { background: rgba(255,255,255,0.2); }
+
+/* ── PAGE SYSTEM ── */
+.page { display: none; }
+.page.active { display: block; animation: fadeUp .28s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ══════════════════════════════
+   PAGE 1 — HOME
+   ══════════════════════════════ */
+.hero {
+  background: linear-gradient(140deg, var(--blue-dk) 0%, var(--blue-mid) 100%);
+  color: white; padding: 3rem 2rem 3.5rem; text-align: center;
+}
+.hero h1 {
+  font-family: 'Kanit', sans-serif;
+  font-size: 26px; font-weight: 700;
+  margin-bottom: 8px; line-height: 1.45;
+}
+.hero p { font-size: 14px; opacity: 0.82; max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+.home-body { padding: 2rem; max-width: 860px; margin: 0 auto; }
+.section-heading {
+  font-family: 'Kanit', sans-serif;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-lt); letter-spacing: 0.07em; text-transform: uppercase;
+  margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;
+}
+.section-heading::after { content:''; flex:1; height:1px; background: var(--border); }
+
+/* การ์ดเครือข่าย */
+.network-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.network-card {
+  background: var(--white); border: 2px solid var(--border);
+  border-radius: 16px; padding: 2rem 1.5rem 1.5rem;
+  cursor: pointer; transition: all .2s; text-align: center; position: relative; overflow: hidden;
+}
+.network-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0;
+  height:4px; background: var(--blue);
+  transform: scaleX(0); transition: transform .2s;
+}
+.network-card:hover { border-color: var(--blue); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.network-card:hover::after { transform: scaleX(1); }
+.network-icon {
+  width:56px; height:56px; border-radius:14px;
+  background: var(--blue-lt);
+  display:flex; align-items:center; justify-content:center;
+  margin: 0 auto 1rem; font-size: 26px;
+}
+.network-title { font-family:'Kanit',sans-serif; font-size:20px; font-weight:700; color:var(--blue); margin-bottom:4px; }
+.network-sub { font-size:12px; color:var(--ink-lt); margin-bottom:1rem; }
+.network-stat {
+  display:flex; justify-content:center; gap:1.5rem;
+  padding-top:1rem; border-top:1px solid var(--border);
+}
+.nstat { text-align:center; }
+.nstat-num { font-family:'Kanit',sans-serif; font-size:22px; font-weight:600; color:var(--ink); }
+.nstat-label { font-size:11px; color:var(--ink-lt); }
+.enter-hint { font-size:12px; color:var(--blue); margin-top:12px; opacity:0; transition:opacity .2s; }
+.network-card:hover .enter-hint { opacity:1; }
+
+/* ══════════════════════════════
+   PAGE 2 — โรงเรียน
+   ══════════════════════════════ */
+.schools-body { padding: 1.5rem 2rem 3rem; max-width: 860px; margin: 0 auto; }
+.page-title { font-family:'Kanit',sans-serif; font-size:18px; font-weight:600; color:var(--ink); margin-bottom:1.25rem; }
+
+.level-tabs { display:flex; gap:8px; margin-bottom:1.5rem; }
+.level-tab {
+  flex:1; padding:10px;
+  border:2px solid var(--border); border-radius:var(--radius);
+  background:var(--white);
+  font-family:'Kanit',sans-serif; font-size:14px; font-weight:500;
+  color:var(--ink-mid); cursor:pointer; transition:all .15s; text-align:center;
+}
+.level-tab.active { border-color:var(--blue); background:var(--blue-lt); color:var(--blue); }
+.level-tab:hover:not(.active) { border-color:#a0b4cc; }
+
+.school-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+.school-card {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:var(--radius); padding:1.2rem 1.25rem;
+  cursor:pointer; transition:all .2s; position:relative; overflow:hidden;
+}
+.school-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background:var(--blue); border-radius:4px 0 0 4px; transition:width .2s;
+}
+.school-card:hover { border-color:var(--blue); box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+.school-card:hover::before { width:6px; }
+.school-card.no-data { opacity:0.45; cursor:not-allowed; }
+.school-card.no-data::before { background:var(--ink-lt); }
+.school-card-name {
+  font-family:'Kanit',sans-serif; font-size:15px; font-weight:500;
+  color:var(--ink); margin-bottom:10px; padding-right:20px;
+}
+.school-total { font-family:'Kanit',sans-serif; font-size:28px; font-weight:700; margin-bottom:2px; }
+.school-total.high { color:var(--green); }
+.school-total.med  { color:var(--blue); }
+.school-total.low  { color:var(--red); }
+.school-total-label { font-size:11px; color:var(--ink-lt); margin-bottom:8px; }
+.score-pills { display:grid; grid-template-columns:1fr 1fr; gap:4px; }
+.score-pill { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--ink-mid); }
+.score-pill .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.student-count { font-size:11px; color:var(--ink-lt); margin-top:8px; }
+.card-arrow {
+  position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+  color:var(--blue); font-size:18px; opacity:0; transition:opacity .2s, right .15s;
+}
+.school-card:hover .card-arrow { opacity:1; right:0.75rem; }
+
+/* ══════════════════════════════
+   PAGE 3 — รายละเอียด
+   ══════════════════════════════ */
+.detail-body { padding: 1.5rem 2rem 3rem; max-width: 860px; margin: 0 auto; }
+.detail-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  margin-bottom:1.5rem; flex-wrap:wrap; gap:12px;
+}
+.detail-school-name { font-family:'Kanit',sans-serif; font-size:22px; font-weight:700; color:var(--ink); }
+.detail-badge {
+  display:inline-block; background:var(--blue-lt); color:var(--blue);
+  font-size:11px; font-weight:500; padding:3px 10px; border-radius:99px; margin-top:5px;
+}
+.level-switch { display:flex; gap:8px; flex-wrap:wrap; }
+.level-switch-btn {
+  padding:7px 16px; border:1.5px solid var(--border); border-radius:8px;
+  background:var(--white); font-family:'Sarabun',sans-serif; font-size:13px;
+  color:var(--ink-mid); cursor:pointer; transition:all .15s;
+}
+.level-switch-btn.active { border-color:var(--blue); background:var(--blue-lt); color:var(--blue); font-weight:500; }
+.level-switch-btn:hover:not(.active):not(:disabled) { border-color:#a0b4cc; }
+.level-switch-btn:disabled { opacity:0.35; cursor:not-allowed; }
+
+.metric-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:12px; margin-bottom:1.5rem; }
+.metric-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:1rem 1.25rem; }
+.metric-card.total { background:var(--blue); border-color:var(--blue); }
+.metric-card.total .mc-label { color:rgba(255,255,255,0.7); }
+.metric-card.total .mc-value { color:white; }
+.mc-label { font-size:11px; color:var(--ink-lt); margin-bottom:6px; letter-spacing:0.04em; text-transform:uppercase; }
+.mc-value { font-family:'Kanit',sans-serif; font-size:28px; font-weight:700; color:var(--ink); line-height:1; }
+.mc-sub { font-size:12px; color:var(--ink-lt); margin-top:4px; }
+
+.chart-section {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem;
+}
+.chart-title { font-family:'Kanit',sans-serif; font-size:14px; font-weight:500; color:var(--ink-mid); margin-bottom:1rem; }
+.legend-row { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:1rem; }
+.leg-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-mid); }
+.leg-dot { width:10px; height:10px; border-radius:3px; }
+.no-data-panel { text-align:center; padding:3rem; color:var(--ink-lt); font-size:14px; }
+
+.site-footer { text-align:center; padding:1.5rem; font-size:12px; color:var(--ink-lt); border-top:1px solid var(--border); margin-top:1rem; }
+
+@media (max-width:600px) {
+  .hero h1 { font-size:20px; }
+  .home-body, .schools-body, .detail-body { padding:1rem 1rem 2rem; }
+  .network-grid { grid-template-columns:1fr; }
+  .school-grid { grid-template-columns:1fr; }
+  .metric-row { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="breadcrumb" id="breadcrumb">
+    <a onclick="goHome()">หน้าแรก</a>
+    <span>/</span>
+    <a id="bc-network" onclick="goNetwork()"></a>
+    <span id="bc-sep2" style="display:none">/</span>
+    <span id="bc-school"></span>
+  </div>
+  <div class="header-logo">
+    ผลการทดสอบระดับชาติ (O-NET) 2568
+    <small>สพป.ชม.2 · อำเภอแม่แตง</small>
+  </div>
+</header>
+
+<!-- PAGE 1: HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>ผลการทดสอบระดับชาติ (O-NET) ปีการศึกษา 2568</h1>
+    <p style="font-size:18px;font-weight:600;opacity:1;margin-bottom:8px;">เครือข่ายพัฒนาคุณภาพการศึกษาอำเภอแม่แตง</p>
+    <p>สำนักงานเขตพื้นที่การศึกษาประถมศึกษาเชียงใหม่ เขต 2<br>เลือกเครือข่ายเพื่อดูผลคะแนนโรงเรียน</p>
+  </div>
+  <div class="home-body">
+    <div class="section-heading">เลือกเครือข่ายพัฒนาคุณภาพการศึกษา</div>
+    <div class="network-grid" id="network-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE 2: เลือกโรงเรียน -->
+<div class="page" id="page-schools">
+  <div class="schools-body">
+    <div class="page-title" id="schools-heading"></div>
+    <div class="level-tabs">
+      <button class="level-tab active" id="schoolTab-p6" onclick="setSchoolsLevel('p6')">ชั้นประถมศึกษาปีที่ 6</button>
+      <button class="level-tab" id="schoolTab-m3" onclick="setSchoolsLevel('m3')">ชั้นมัธยมศึกษาปีที่ 3</button>
+    </div>
+    <div class="school-grid" id="school-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE 3: รายละเอียด -->
+<div class="page" id="page-detail">
+  <div class="detail-body">
+    <div class="detail-header">
+      <div>
+        <div class="detail-school-name" id="detail-name"></div>
+        <div class="detail-badge" id="detail-badge"></div>
+      </div>
+      <div class="level-switch">
+        <button class="level-switch-btn" id="detailTab-p6" onclick="setDetailLevel('p6')">ป.6</button>
+        <button class="level-switch-btn" id="detailTab-m3" onclick="setDetailLevel('m3')">ม.3</button>
+      </div>
+    </div>
+    <div class="metric-row" id="detail-metrics"></div>
+    <div class="chart-section">
+      <div class="chart-title">คะแนนรายวิชา (เต็ม 100 คะแนน)</div>
+      <div class="legend-row" id="detail-legend"></div>
+      <div id="chart-svg-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  ข้อมูลผลการทดสอบระดับชาติ ปีการศึกษา 2568 · สพป.ชม.2 · อำเภอแม่แตง<br>
+  <span style="font-size:11px;color:var(--ink-lt);margin-top:4px;display:inline-block">พัฒนาระบบโดย ศน.เต็มสุข กฤตตภัคโภคิน</span>
+</footer>
+
+<script>
+/* ─── DATA ─── */
+const NETWORKS = {
+  mt1: {
+    id: 'mt1', name: 'แม่แตง 1',
+    fullName: 'เครือข่ายพัฒนาคุณภาพการศึกษาอำเภอแม่แตง 1',
+    p6: [
+      { name:'ป่าจี้วังแดงวิทยา',        students:27, total:27.40, thai:38.43, math:19.55, sci:25.46, eng:26.16 },
+      { name:'วัดหนองออน',               students:4,  total:39.11, thai:49.13, math:27.78, sci:41.25, eng:38.28 },
+      { name:'ชุมชนวัดช่อแล',            students:28, total:27.12, thai:38.20, math:16.34, sci:25.27, eng:28.68 },
+      { name:'บ้านเป้าวิทยาคาร',         students:11, total:30.34, thai:39.50, math:20.85, sci:35.45, eng:25.57 },
+      { name:'บ้านปง อินทขิลวิทยาคาร',  students:10, total:30.69, thai:46.03, math:18.91, sci:33.75, eng:24.06 },
+      { name:'วัดนาเม็ง',                students:4,  total:32.49, thai:48.00, math:17.88, sci:34.38, eng:29.69 },
+      { name:'บ้านผึ้ง',                 students:15, total:36.13, thai:53.77, math:25.38, sci:37.67, eng:27.71 },
+      { name:'ภูดินวิทยา',               students:2,  total:26.31, thai:44.75, math:13.00, sci:10.00, eng:37.50 },
+      { name:'บ้านปางห้วยตาด',           students:3,  total:28.46, thai:31.91, math:19.42, sci:35.42, eng:27.08 },
+      { name:'บ้านทับเดื่อ',              students:6,  total:35.94, thai:47.21, math:16.35, sci:41.67, eng:38.54 },
+      { name:'บ้านปางกว้าง',             students:6,  total:33.02, thai:43.83, math:21.88, sci:28.33, eng:38.02 },
+    ],
+    m3: [
+      { name:'ป่าจี้วังแดงวิทยา',        students:15, total:29.62, thai:49.73, math:21.93, sci:22.02, eng:24.79 },
+      { name:'ชุมชนวัดช่อแล',            students:22, total:33.35, thai:45.48, math:26.08, sci:28.30, eng:33.52 },
+      { name:'บ้านเป้าวิทยาคาร',         students:5,  total:33.83, thai:39.81, math:33.25, sci:32.25, eng:30.00 },
+      { name:'บ้านปง อินทขิลวิทยาคาร',  students:8,  total:38.11, thai:56.42, math:32.25, sci:34.09, eng:29.69 },
+      { name:'บ้านปางห้วยตาด',           students:3,  total:31.91, thai:19.42, math:35.42, sci:27.08, eng:31.91 },
+    ],
+  },
+  mt2: {
+    id: 'mt2', name: 'แม่แตง 2',
+    fullName: 'เครือข่ายพัฒนาคุณภาพการศึกษาอำเภอแม่แตง 2',
+    p6: [
+      { name:'สันมหาพนวิทยา',   students:18, total:29.60, thai:44.79, math:15.17, sci:30.14, eng:28.30 },
+      { name:'วัดแม่กะ',        students:20, total:36.92, thai:59.11, math:28.00, sci:32.13, eng:28.44 },
+      { name:'วัดทุ่งหลวง',      students:10, total:49.21, thai:63.50, math:38.20, sci:55.75, eng:39.38 },
+      { name:'บ้านปางไม้แดง',   students:8,  total:40.83, thai:58.88, math:28.02, sci:49.06, eng:27.34 },
+      { name:'บ้านช้างใน',      students:null, total:null, thai:null, math:null, sci:null, eng:null },
+      { name:'บ้านเมืองกื้ด',    students:16, total:31.97, thai:48.38, math:17.22, sci:36.09, eng:26.17 },
+      { name:'บ้านแม่ตะมาน',    students:21, total:30.64, thai:44.86, math:17.95, sci:31.19, eng:28.57 },
+    ],
+    m3: [
+      { name:'สันมหาพนวิทยา',   students:19, total:34.69, thai:51.78, math:27.88, sci:32.11, eng:26.97 },
+      { name:'บ้านปางไม้แดง',   students:11, total:36.42, thai:60.48, math:25.27, sci:32.36, eng:27.56 },
+      { name:'บ้านเมืองกื้ด',    students:19, total:31.14, thai:48.78, math:20.38, sci:31.54, eng:23.85 },
+      { name:'บ้านแม่ตะมาน',    students:10, total:39.51, thai:60.60, math:34.60, sci:32.53, eng:30.31 },
+    ],
+  },
+  mt3: {
+    id: 'mt3', name: 'แม่แตง 3',
+    fullName: 'เครือข่ายพัฒนาคุณภาพการศึกษาอำเภอแม่แตง 3',
+    p6: [
+      { name:'สันป่าสักวิทยา',      students:80, total:34.07, thai:49.59, math:22.60, sci:32.38, eng:31.72 },
+      { name:'บ้านบวกหมื้อ',        students:14, total:38.46, thai:58.27, math:34.63, sci:33.04, eng:27.90 },
+      { name:'ร่ำเปิงวิทยา',         students:33, total:30.12, thai:48.15, math:19.44, sci:27.42, eng:25.47 },
+      { name:'สันป่ายางวิทยาคาร',   students:10, total:29.15, thai:48.65, math:16.25, sci:28.25, eng:23.44 },
+      { name:'วัดห้วยไร่',           students:19, total:37.59, thai:52.34, math:23.74, sci:37.11, eng:37.17 },
+    ],
+    m3: [
+      { name:'ร่ำเปิงวิทยา', students:15, total:41.34, thai:62.64, math:28.12, sci:33.57, eng:41.04 },
+    ],
+  },
+  mt4: {
+    id: 'mt4', name: 'แม่แตง 4',
+    fullName: 'เครือข่ายพัฒนาคุณภาพการศึกษาอำเภอแม่แตง 4',
+    p6: [
+      { name:'สบเปิงวิทยา',  students:18, total:31.66, thai:46.61, math:19.31, sci:32.92, eng:27.78 },
+      { name:'วัดท่าข้าม',   students:8,  total:33.02, thai:49.41, math:27.13, sci:30.94, eng:26.61 },
+      { name:'วัดบ้านเหล่า', students:13, total:28.04, thai:41.38, math:15.10, sci:30.19, eng:25.48 },
+      { name:'บ้านก๋ายน้อย',students:3,  total:25.21, thai:31.17, math:24.04, sci:25.83, eng:19.79 },
+      { name:'บ้านผาหมอน',  students:8,  total:22.15, thai:29.25, math:15.52, sci:21.56, eng:22.27 },
+      { name:'บ้านปางฮ่าง', students:6,  total:32.66, thai:49.33, math:20.69, sci:34.58, eng:26.04 },
+    ],
+    m3: [
+      { name:'สบเปิงวิทยา',  students:25, total:33.57, thai:45.39, math:25.04, sci:36.47, eng:27.38 },
+      { name:'วัดท่าข้าม',   students:8,  total:34.77, thai:55.45, math:22.28, sci:36.75, eng:24.61 },
+      { name:'วัดบ้านเหล่า', students:7,  total:28.55, thai:44.50, math:19.86, sci:29.29, eng:20.54 },
+    ],
+  },
+  mt5: {
+    id: 'mt5', name: 'แม่แตง 5',
+    fullName: 'เครือข่ายพัฒนาคุณภาพการศึกษาอำเภอแม่แตง 5',
+    p6: [
+      { name:'บ้านแม่แสะ',    students:null, total:28.80, thai:43.42, math:19.92, sci:25.83, eng:26.04 },
+      { name:'วัดปางมะกล้วย', students:null, total:null,  thai:null,  math:null,  sci:null,  eng:null  },
+      { name:'ป่าแป๋วิทยา',   students:null, total:40.00, thai:53.39, math:37.11, sci:38.61, eng:30.90 },
+      { name:'บ้านแม่เลา',    students:null, total:62.78, thai:87.00, math:26.00, sci:72.50, eng:65.53 },
+      { name:'บ้านแม่ไคร้',   students:null, total:31.86, thai:40.13, math:19.50, sci:28.75, eng:39.06 },
+      { name:'บ้านแม่แมม',    students:null, total:26.51, thai:32.58, math:17.33, sci:29.58, eng:26.56 },
+    ],
+    m3: [
+      { name:'วัดปางมะกล้วย', students:null, total:56.80, thai:18.56, math:44.19, sci:19.92, eng:34.87 },
+      { name:'ป่าแป๋วิทยา',   students:null, total:54.05, thai:27.09, math:37.94, sci:24.22, eng:35.83 },
+      { name:'บ้านแม่ไคร้',   students:null, total:27.96, thai:38.48, math:21.71, sci:27.54, eng:24.11 },
+    ],
+  },
+};
+
+const SUBJECTS = [
+  { key:'thai', label:'ภาษาไทย',     front:'#2D7DD2', top:'#85B7EB', side:'#1A5EA8', dot:'#2D7DD2' },
+  { key:'math', label:'คณิตศาสตร์', front:'#1A8C5E', top:'#5DCAA5', side:'#0F5C3E', dot:'#1A8C5E' },
+  { key:'sci',  label:'วิทยาศาสตร์', front:'#C47D0E', top:'#EFBE6A', side:'#8A5508', dot:'#C47D0E' },
+  { key:'eng',  label:'ภาษาอังกฤษ', front:'#8B3A8B', top:'#C97EC9', side:'#5C215C', dot:'#8B3A8B' },
+];
+
+/* ─── STATE ─── */
+let currentNetwork = null;
+let currentSchool  = null;
+let schoolsLevel   = 'p6';
+let detailLevel    = 'p6';
+
+/* ─── HELPERS ─── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  if (!currentNetwork) { bc.style.display = 'none'; return; }
+  bc.style.display = 'flex';
+  document.getElementById('bc-network').textContent = NETWORKS[currentNetwork].name;
+  const sep = document.getElementById('bc-sep2');
+  const bcs = document.getElementById('bc-school');
+  if (currentSchool) { sep.style.display='inline'; bcs.textContent=currentSchool; }
+  else { sep.style.display='none'; bcs.textContent=''; }
+}
+
+/* ─── NAVIGATION ─── */
+function goHome() {
+  currentNetwork = null; currentSchool = null;
+  updateBreadcrumb(); showPage('page-home');
+}
+
+function goNetwork() {
+  currentSchool = null;
+  updateBreadcrumb();
+  renderSchoolGrid();
+  showPage('page-schools');
+}
+
+/* ─── PAGE 1: HOME ─── */
+function renderHome() {
+  document.getElementById('network-grid').innerHTML = Object.values(NETWORKS).map(net => {
+    const p6v = net.p6.filter(s => s.total !== null);
+    const m3v = net.m3.filter(s => s.total !== null);
+    const avgP6 = p6v.length ? (p6v.reduce((a,s)=>a+s.total,0)/p6v.length).toFixed(2) : '-';
+    const avgM3 = m3v.length ? (m3v.reduce((a,s)=>a+s.total,0)/m3v.length).toFixed(2) : '-';
+    return `
+      <div class="network-card" onclick="openNetwork('${net.id}')">
+        <div class="network-icon">🏫</div>
+        <div class="network-title">เครือข่าย${net.name}</div>
+        <div class="network-sub">${net.fullName}</div>
+        <div class="network-stat">
+          <div class="nstat">
+            <div class="nstat-num">${net.p6.length}</div>
+            <div class="nstat-label">โรงเรียน (ป.6)</div>
+          </div>
+          <div class="nstat">
+            <div class="nstat-num">${avgP6}</div>
+            <div class="nstat-label">เฉลี่ย ป.6</div>
+          </div>
+          <div class="nstat">
+            <div class="nstat-num">${avgM3}</div>
+            <div class="nstat-label">เฉลี่ย ม.3</div>
+          </div>
+        </div>
+        <div class="enter-hint">คลิกเพื่อดูรายโรงเรียน →</div>
+      </div>`;
+  }).join('');
+}
+
+function openNetwork(netId) {
+  currentNetwork = netId; currentSchool = null;
+  schoolsLevel = 'p6';
+  updateBreadcrumb();
+  document.getElementById('schools-heading').textContent = NETWORKS[netId].fullName;
+  document.getElementById('schoolTab-p6').classList.add('active');
+  document.getElementById('schoolTab-m3').classList.remove('active');
+  renderSchoolGrid();
+  showPage('page-schools');
+}
+
+/* ─── PAGE 2: โรงเรียน ─── */
+function setSchoolsLevel(l) {
+  schoolsLevel = l;
+  document.getElementById('schoolTab-p6').classList.toggle('active', l==='p6');
+  document.getElementById('schoolTab-m3').classList.toggle('active', l==='m3');
+  renderSchoolGrid();
+}
+
+function renderSchoolGrid() {
+  const net = NETWORKS[currentNetwork];
+  document.getElementById('school-grid').innerHTML = net[schoolsLevel].map(r => {
+    const noData = r.total === null;
+    const cls = r.total >= 50 ? 'high' : r.total < 30 ? 'low' : 'med';
+    return `
+      <div class="school-card${noData?' no-data':''}"
+           onclick="${noData ? '' : `openSchool('${r.name}','${schoolsLevel}')`}">
+        <div class="school-card-name">${r.name}</div>
+        ${noData
+          ? `<div style="font-size:13px;color:#aaa;margin-top:4px">ไม่มีข้อมูล</div>`
+          : `<div class="school-total ${cls}">${r.total.toFixed(2)}</div>
+             <div class="school-total-label">คะแนนรวม (เต็ม 100)</div>
+             <div class="score-pills">
+               ${SUBJECTS.map(s=>`
+                 <div class="score-pill">
+                   <span class="dot" style="background:${s.dot}"></span>
+                   ${s.label.substring(0,4)} <strong>${r[s.key].toFixed(1)}</strong>
+                 </div>`).join('')}
+             </div>
+             ${r.students ? `<div class="student-count">👤 นักเรียน ${r.students} คน</div>` : ''}`
+        }
+        ${!noData ? `<span class="card-arrow">›</span>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function openSchool(name, level) {
+  currentSchool = name; detailLevel = level;
+  updateBreadcrumb();
+  renderDetailPage();
+  showPage('page-detail');
+}
+
+/* ─── PAGE 3: รายละเอียด ─── */
+function setDetailLevel(l) {
+  detailLevel = l; renderDetailPage();
+}
+
+function renderDetailPage() {
+  const net = NETWORKS[currentNetwork];
+  const r = net[detailLevel].find(d => d.name === currentSchool);
+  const hasP6 = net.p6.some(d => d.name === currentSchool);
+  const hasM3 = net.m3.some(d => d.name === currentSchool);
+
+  document.getElementById('detail-name').textContent = currentSchool;
+  document.getElementById('detail-badge').textContent =
+    `${net.name} · ${detailLevel==='p6' ? 'ชั้นประถมศึกษาปีที่ 6' : 'ชั้นมัธยมศึกษาปีที่ 3'}`;
+
+  document.getElementById('detailTab-p6').classList.toggle('active', detailLevel==='p6');
+  document.getElementById('detailTab-m3').classList.toggle('active', detailLevel==='m3');
+  document.getElementById('detailTab-p6').disabled = !hasP6;
+  document.getElementById('detailTab-m3').disabled = !hasM3;
+
+  if (!r || r.total === null) {
+    document.getElementById('detail-metrics').innerHTML =
+      `<div class="no-data-panel" style="grid-column:1/-1">ไม่มีข้อมูลของโรงเรียนนี้ในระดับชั้นนี้</div>`;
+    document.getElementById('chart-svg-wrap').innerHTML = '';
+    document.getElementById('detail-legend').innerHTML = '';
+    return;
+  }
+
+  // Metric cards — วิชา 4 ใบ + คะแนนรวม 1 ใบ
+  let html = SUBJECTS.map(s => `
+    <div class="metric-card">
+      <div class="mc-label">${s.label}</div>
+      <div class="mc-value" style="color:${s.front}">${r[s.key].toFixed(2)}</div>
+    </div>`).join('');
+  html += `
+    <div class="metric-card total">
+      <div class="mc-label">คะแนนรวม</div>
+      <div class="mc-value">${r.total.toFixed(2)}</div>
+      ${r.students ? `<div class="mc-sub" style="color:rgba(255,255,255,.65)">นักเรียน ${r.students} คน</div>` : ''}
+    </div>`;
+  document.getElementById('detail-metrics').innerHTML = html;
+
+  document.getElementById('detail-legend').innerHTML = SUBJECTS.map(s =>
+    `<span class="leg-item"><span class="leg-dot" style="background:${s.dot}"></span>${s.label}</span>`
+  ).join('');
+
+  render3DChart(r);
+}
+
+/* ─── 3D SVG BAR CHART ─── */
+function render3DChart(r) {
+  const W=600, H=320, mL=50, mR=24, mT=32, mB=60;
+  const cW=W-mL-mR, cH=H-mT-mB;
+  const dx=16, dy=-9;
+  const barW = (cW / SUBJECTS.length) * 0.50;
+
+  const yScale = v => cH - (v/100)*cH;
+
+  function bar3D(x, barH, s) {
+    if (barH < 1) return '';
+    const x0=x, x1=x+barW, y0=cH, y1=cH-barH;
+    return `
+      <path d="M${x1},${y0} L${x1+dx},${y0+dy} L${x1+dx},${y1+dy} L${x1},${y1} Z" fill="${s.side}"/>
+      <path d="M${x0},${y0} L${x1},${y0} L${x1},${y1} L${x0},${y1} Z" fill="${s.front}"/>
+      <path d="M${x0},${y1} L${x1},${y1} L${x1+dx},${y1+dy} L${x0+dx},${y1+dy} Z" fill="${s.top}"/>`;
+  }
+
+  const grid = [0,20,40,60,80,100].map(v => `
+    <line x1="0" y1="${yScale(v)}" x2="${cW}" y2="${yScale(v)}" stroke="rgba(100,120,160,0.12)" stroke-width="1"/>
+    <text x="-7" y="${yScale(v)+4}" text-anchor="end" font-size="11" fill="#8492A6">${v}</text>`).join('');
+
+  const groupW = cW / SUBJECTS.length;
+  let bars='', vals='', xlabels='';
+  SUBJECTS.forEach((s,i) => {
+    const val = r[s.key] || 0;
+    const barH = (val/100)*cH;
+    const xBase = i*groupW + (groupW-barW)/2;
+    bars  += bar3D(xBase, barH, s);
+    vals  += `<text x="${xBase+barW/2+dx*0.25}" y="${cH-barH-8}" text-anchor="middle" font-size="13" font-weight="700" fill="${s.front}">${val.toFixed(1)}</text>`;
+    const words = s.label.length>4 ? [s.label.substring(0,4), s.label.substring(4)] : [s.label];
+    words.forEach((w,wi) => {
+      xlabels += `<text x="${xBase+barW/2}" y="${cH+18+wi*15}" text-anchor="middle" font-size="12" fill="#4A5568">${w}</text>`;
+    });
+  });
+
+  const axes = `
+    <line x1="0" y1="0" x2="0" y2="${cH}" stroke="rgba(100,120,160,0.3)" stroke-width="1.5"/>
+    <line x1="0" y1="${cH}" x2="${cW+dx+6}" y2="${cH}" stroke="rgba(100,120,160,0.3)" stroke-width="1.5"/>`;
+
+  document.getElementById('chart-svg-wrap').innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(${mL},${mT})">${grid}${axes}${bars}${vals}${xlabels}</g>
+    </svg>`;
+}
+
+/* ─── INIT ─── */
+renderHome();
+</script>
+</body>
+</html>
