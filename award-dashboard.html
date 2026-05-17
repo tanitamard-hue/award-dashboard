@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ฐานข้อมูลรางวัลและผลงานเชิงประจักษ์ สพป.เชียงใหม่ เขต 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --navy:   #0f2d5e;
+  --blue:   #1b4f9b;
+  --blue2:  #2563c7;
+  --sky:    #3b9ee8;
+  --gold:   #e8a020;
+  --gold2:  #f5c842;
+  --teal:   #0e9e76;
+  --rose:   #d63b6a;
+  --purple: #6b3fc7;
+  --bg:     #f0f4fa;
+  --card:   #ffffff;
+  --border: #dde4f0;
+  --text:   #1a2340;
+  --muted:  #637196;
+  --light:  #eaf0fb;
+  --r:      14px;
+  --rs:     8px;
+  --shadow: 0 4px 24px rgba(15,45,94,.10);
+  --shadow2:0 2px 8px rgba(15,45,94,.07);
+  --font:   'Sarabun', sans-serif;
+  --serif:  'Noto Serif Thai', serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;min-height:100vh;}
+
+/* ── HEADER ── */
+.hdr{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--blue2) 100%);
+  height:64px;padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 16px rgba(15,45,94,.25);
+}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.hdr-logo{
+  width:40px;height:40px;border-radius:11px;
+  background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.hdr-title{font-family:var(--serif);font-size:16px;font-weight:700;color:#fff;line-height:1.25;}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:1px;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.hdr-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 15px;border-radius:99px;border:none;
+  font-family:var(--font);font-size:13px;cursor:pointer;transition:all .18s;
+  background:rgba(255,255,255,.13);color:#fff;
+}
+.hdr-btn:hover{background:rgba(255,255,255,.24);}
+.conn-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 13px;border-radius:99px;font-size:12px;font-weight:500;
+  background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);
+  transition:background .2s;
+}
+.conn-pill.ok {background:rgba(14,158,118,.3);border-color:rgba(14,158,118,.5);}
+.conn-pill.err{background:rgba(214,59,106,.3);border-color:rgba(214,59,106,.5);}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:calc(100vh - 64px);}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:230px;flex-shrink:0;
+  background:var(--card);border-right:1px solid var(--border);
+  padding:1.5rem 0;
+  position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;
+}
+.sb-section{padding:0 12px;margin-bottom:8px;}
+.sb-label{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);padding:6px 10px 4px;display:block;
+}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 12px;border-radius:var(--rs);
+  cursor:pointer;color:var(--muted);font-size:14px;
+  transition:all .15s;border:none;background:none;width:100%;text-align:left;
+}
+.nav-item:hover{background:var(--light);color:var(--blue);}
+.nav-item.active{background:linear-gradient(90deg,#e8f0fb,#d6e4f7);color:var(--blue2);font-weight:600;}
+.nav-ic{font-size:18px;width:22px;text-align:center;flex-shrink:0;}
+.sb-divider{height:1px;background:var(--border);margin:10px 16px;}
+.sb-stat{
+  margin:16px 12px 0;
+  background:linear-gradient(135deg,var(--navy),var(--blue2));
+  border-radius:var(--r);padding:18px;text-align:center;color:#fff;
+}
+.sb-stat-num{font-size:34px;font-weight:700;line-height:1;}
+.sb-stat-lbl{font-size:11px;opacity:.72;margin-top:5px;}
+
+/* ── MAIN ── */
+.main{flex:1;padding:2rem;min-width:0;}
+
+/* ── PAGE ── */
+.page{display:none;animation:fadeIn .22s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap;}
+.page-title{
+  font-family:var(--serif);font-size:22px;font-weight:700;color:var(--navy);
+  display:flex;align-items:center;gap:10px;
+}
+.page-title-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+}
+
+/* ── METRIC CARDS ── */
+.metric-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1rem;margin-bottom:1.5rem;
+}
+.metric-card{
+  background:var(--card);border-radius:var(--r);
+  padding:1.25rem 1.4rem;border:1px solid var(--border);box-shadow:var(--shadow2);
+  position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s;
+}
+.metric-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+.mc-stripe{position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0;}
+.s-blue{background:linear-gradient(90deg,var(--blue),var(--sky));}
+.s-gold{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.s-teal{background:linear-gradient(90deg,var(--teal),#3dd6b5);}
+.s-rose{background:linear-gradient(90deg,var(--rose),#f06fa0);}
+.mc-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px;}
+.ic-blue{background:#ddeeff;} .ic-gold{background:#fff3d6;}
+.ic-teal{background:#d6f5ed;} .ic-rose{background:#fde8ef;}
+.mc-lbl{font-size:12px;color:var(--muted);margin-bottom:4px;}
+.mc-val{font-size:30px;font-weight:700;color:var(--navy);line-height:1;}
+.mc-sub{font-size:11px;color:var(--muted);margin-top:5px;}
+
+/* ── CHART BOXES ── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+@media(max-width:860px){.chart-grid{grid-template-columns:1fr;}}
+.chart-box{
+  background:var(--card);border-radius:var(--r);
+  padding:1.25rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow2);
+}
+.chart-box-full{grid-column:1/-1;}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.chart-title{font-size:13px;font-weight:600;color:var(--navy);}
+.chart-wrap{position:relative;width:100%;}
+
+/* ── CARD ── */
+.card{
+  background:var(--card);border-radius:var(--r);
+  padding:1.25rem 1.5rem;border:1px solid var(--border);
+  box-shadow:var(--shadow2);margin-bottom:1.25rem;
+}
+.card-title{
+  font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1rem;
+  display:flex;align-items:center;gap:7px;
+}
+.card-title::before{
+  content:'';width:3px;height:14px;
+  background:linear-gradient(var(--blue2),var(--sky));
+  border-radius:2px;flex-shrink:0;
+}
+
+/* ── TOP SCHOOLS ── */
+.bar-item{display:flex;align-items:center;gap:12px;margin-bottom:11px;}
+.bar-rank{font-size:13px;font-weight:700;color:var(--muted);min-width:26px;text-align:center;}
+.bar-info{flex:1;}
+.bar-name{font-size:13px;color:var(--text);margin-bottom:5px;font-weight:500;}
+.bar-track{height:6px;background:var(--light);border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue2),var(--sky));transition:width .6s ease;}
+.bar-count{font-size:14px;font-weight:700;color:var(--blue2);min-width:26px;text-align:right;}
+
+/* ── TABLE ── */
+.filter-bar{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap;}
+.filter-bar input,.filter-bar select{
+  padding:9px 13px;border:1.5px solid var(--border);border-radius:var(--rs);
+  font-family:var(--font);font-size:13px;background:var(--card);color:var(--text);
+  outline:none;transition:border-color .15s,box-shadow .15s;
+}
+.filter-bar input{flex:1;min-width:200px;}
+.filter-bar input:focus,.filter-bar select:focus{
+  border-color:var(--blue2);box-shadow:0 0 0 3px rgba(37,99,199,.12);
+}
+.tbl-card{
+  background:var(--card);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--shadow2);
+  overflow:hidden;margin-bottom:.5rem;
+}
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{
+  text-align:left;padding:11px 14px;
+  background:linear-gradient(180deg,#f5f8ff 0%,#eef2fb 100%);
+  border-bottom:2px solid var(--border);
+  color:var(--navy);font-weight:700;white-space:nowrap;font-size:12px;
+}
+tbody td{padding:10px 14px;border-bottom:1px solid #f0f3fb;vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#f7f9ff;}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;font-weight:600;white-space:nowrap;}
+.badge-teacher {background:#d6f5ed;color:#0b6b50;}
+.badge-student {background:#ddeeff;color:#0d3b8a;}
+.badge-admin   {background:#fff3d6;color:#7a4500;}
+.badge-school  {background:#ece6fb;color:#4a2b8c;}
+.badge-area    {background:#eef0f4;color:#4a5568;}
+.badge-province{background:#ddeeff;color:#0d3b8a;}
+.badge-region  {background:#e0f0ff;color:#0c3060;}
+.badge-national{background:#d6f5ed;color:#085c3d;}
+.badge-inter   {background:#ece6fb;color:#4a2b8c;}
+.badge-ok      {background:#d6f5ed;color:#085c3d;}
+.badge-wait    {background:#fff3d6;color:#7a4500;}
+.badge-fix     {background:#fde8ef;color:#8c1440;}
+
+/* ── FORM ── */
+.form-section-header{
+  display:flex;align-items:center;gap:10px;
+  padding:13px 18px;margin:0 -1.5rem 1.25rem;
+  margin-top:-1.25rem;border-bottom:1px solid var(--border);
+  background:linear-gradient(90deg,#f3f7ff,var(--card));
+}
+.form-section-num{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue2),var(--sky));
+  color:#fff;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.form-section-title{font-size:13px;font-weight:700;color:var(--navy);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr;}}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-size:13px;font-weight:600;color:var(--navy);}
+.fg input,.fg select,.fg textarea{
+  padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--rs);
+  font-family:var(--font);font-size:14px;color:var(--text);background:var(--card);
+  transition:border-color .15s,box-shadow .15s;outline:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--blue2);box-shadow:0 0 0 3px rgba(37,99,199,.12);
+}
+.fg textarea{resize:vertical;min-height:80px;}
+.req{color:var(--rose);}
+.other-input{display:none;margin-top:8px;}
+.other-input.show{display:block;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:var(--rs);
+  font-family:var(--font);font-size:14px;font-weight:600;
+  cursor:pointer;border:none;transition:all .18s;
+}
+.btn-outline{background:var(--card);color:var(--navy);border:1.5px solid var(--border);}
+.btn-outline:hover{background:var(--light);border-color:var(--blue2);}
+.btn-submit{
+  width:100%;justify-content:center;padding:14px;font-size:15px;
+  background:linear-gradient(135deg,var(--navy),var(--blue2));
+  color:#fff;box-shadow:0 4px 18px rgba(15,45,94,.3);
+  border-radius:var(--r);margin-top:.5rem;
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 7px 24px rgba(15,45,94,.4);}
+
+/* ── STATUS MESSAGES ── */
+.status-msg{
+  display:none;align-items:flex-start;gap:10px;
+  padding:12px 16px;border-radius:var(--rs);
+  font-size:13px;margin-top:1rem;border:1px solid;line-height:1.6;
+}
+.status-msg.info   {background:#ddeeff;border-color:#a5c8f5;color:#0d3b8a;display:flex;}
+.status-msg.success{background:#d6f5ed;border-color:#9de0c7;color:#085c3d;display:flex;}
+.status-msg.error  {background:#fde8ef;border-color:#f4a0bc;color:#8c1440;display:flex;}
+.status-msg.warning{background:#fff3d6;border-color:#f5d67e;color:#7a4500;display:flex;}
+
+/* ── TIP ── */
+.tip{
+  font-size:13px;color:#0d3b8a;padding:11px 15px;
+  background:#ddeeff;border-left:3px solid var(--blue2);
+  border-radius:0 var(--rs) var(--rs) 0;margin-bottom:1.25rem;line-height:1.75;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:3.5rem 1rem;color:var(--muted);}
+.empty-icon{font-size:46px;margin-bottom:12px;opacity:.5;}
+.empty-text{font-size:14px;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* ── LOADING OVERLAY (ขณะรอบันทึก) ── */
+.loading-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(15,45,94,.45);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+}
+.loading-overlay.show { display: flex; animation: fadeIn .2s ease; }
+.loading-box {
+  background: white; border-radius: 20px;
+  padding: 2.5rem 3rem; text-align: center;
+  box-shadow: 0 24px 64px rgba(15,45,94,.25);
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+}
+.spinner {
+  width: 52px; height: 52px;
+  border: 5px solid var(--light);
+  border-top-color: var(--blue2);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-title { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--navy); }
+.loading-sub   { font-size: 13px; color: var(--muted); }
+
+/* ── SUCCESS POPUP (เมื่อบันทึกสำเร็จ) ── */
+.popup-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(15,45,94,.4);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+}
+.popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
+.popup-box {
+  background: white; border-radius: 24px;
+  padding: 2.5rem 2.5rem 2rem;
+  box-shadow: 0 28px 72px rgba(15,45,94,.22);
+  text-align: center; max-width: 360px; width: 90%;
+  animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.8) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.popup-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #d6f5ed, #a3e8d0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; margin: 0 auto 18px;
+  animation: bounceIn .4s .1s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes bounceIn {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+.popup-title { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.popup-msg   { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 22px; }
+.popup-name  { font-weight: 600; color: var(--blue2); }
+.popup-btn {
+  width: 100%; padding: 12px;
+  background: linear-gradient(135deg, var(--teal), #12c48a);
+  color: white; border: none; border-radius: var(--rs);
+  font-family: var(--serif); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: all .18s;
+  box-shadow: 0 4px 14px rgba(14,158,118,.35);
+}
+.popup-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(14,158,118,.45); }
+
+/* ── EVIDENCE PREVIEW POPUP ── */
+.ev-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9998;
+  background: rgba(15,45,94,.55); backdrop-filter: blur(5px);
+  align-items: center; justify-content: center; padding: 1.5rem;
+}
+.ev-overlay.show { display: flex; animation: fadeIn .2s ease; }
+.ev-box {
+  background: white; border-radius: 20px; width: 100%; max-width: 760px;
+  max-height: 90vh; display: flex; flex-direction: column;
+  box-shadow: 0 32px 80px rgba(15,45,94,.3);
+  animation: popIn .25s cubic-bezier(.34,1.56,.64,1);
+  overflow: hidden;
+}
+.ev-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #f5f8ff, white);
+  flex-shrink: 0;
+}
+.ev-header-left { display: flex; flex-direction: column; gap: 3px; }
+.ev-title { font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--navy); }
+.ev-sub   { font-size: 12px; color: var(--muted); }
+.ev-header-right { display: flex; gap: 8px; align-items: center; }
+.ev-btn-open {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 99px; border: none;
+  background: var(--blue2); color: white;
+  font-family: var(--font); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s; text-decoration: none;
+}
+.ev-btn-open:hover { background: var(--navy); }
+.ev-close {
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: var(--light); color: var(--muted);
+  font-size: 18px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: all .15s;
+}
+.ev-close:hover { background: #fde8ef; color: var(--rose); }
+.ev-body { flex: 1; overflow: hidden; min-height: 0; }
+.ev-iframe {
+  width: 100%; height: 100%; min-height: 500px;
+  border: none; display: block;
+}
+.ev-fallback {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 3rem; gap: 16px;
+  height: 100%; min-height: 300px; text-align: center;
+}
+.ev-fallback-icon { font-size: 52px; opacity: .5; }
+.ev-fallback-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+/* ปุ่มดูหลักฐานในตาราง */
+.btn-ev {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 99px; border: 1.5px solid #b6ccef;
+  background: #f0f6ff; color: var(--blue2);
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.btn-ev:hover { background: var(--blue2); color: white; border-color: var(--blue2); }
+.btn-ev-none { font-size: 11px; color: var(--muted); padding: 4px 6px; }
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">🏆</div>
+    <div>
+      <div class="hdr-title">ฐานข้อมูลรางวัลและผลงานเชิงประจักษ์ การพัฒนาคุณภาพการศึกษา</div>
+      <div class="hdr-sub">สำนักงานเขตพื้นที่การศึกษาประถมศึกษาเชียงใหม่ เขต 2</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button class="hdr-btn" onclick="loadData()">⟳ รีเฟรชข้อมูล</button>
+    <div class="conn-pill" id="conn-badge">
+      <span class="conn-dot"></span>
+      <span id="conn-text">กำลังโหลด...</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar">
+    <div class="sb-section">
+      <span class="sb-label">เมนูหลัก</span>
+      <button class="nav-item active" onclick="goPage('overview')">
+        <span class="nav-ic">📊</span>ภาพรวม
+      </button>
+      <button class="nav-item" onclick="goPage('table')">
+        <span class="nav-ic">📋</span>ตารางข้อมูล
+      </button>
+      <button class="nav-item" onclick="goPage('addform')">
+        <span class="nav-ic">➕</span>เพิ่มรางวัล
+      </button>
+    </div>
+    <div class="sb-stat">
+      <div class="sb-stat-num" id="sidebar-total">—</div>
+      <div class="sb-stat-lbl">รายการรางวัลทั้งหมด</div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <main class="main">
+
+    <!-- ══ OVERVIEW ══ -->
+    <div id="page-overview" class="page active">
+      <div class="page-header">
+        <div class="page-title">
+          <div class="page-title-icon">📊</div>ภาพรวมรางวัลและผลงาน
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="mc-stripe s-blue"></div>
+          <div class="mc-icon ic-blue">🏆</div>
+          <div class="mc-lbl">รางวัลทั้งหมด (3 ปี)</div>
+          <div class="mc-val" id="m-total">—</div>
+          <div class="mc-sub">ปีการศึกษา 2567–2569</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-stripe s-gold"></div>
+          <div class="mc-icon ic-gold">🏫</div>
+          <div class="mc-lbl">โรงเรียนที่มีข้อมูล</div>
+          <div class="mc-val" id="m-schools">—</div>
+          <div class="mc-sub">โรงเรียนในสังกัด</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-stripe s-teal"></div>
+          <div class="mc-icon ic-teal">🌟</div>
+          <div class="mc-lbl">ระดับชาติขึ้นไป</div>
+          <div class="mc-val" id="m-national">—</div>
+          <div class="mc-sub">ประเทศ / นานาชาติ</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-stripe s-rose"></div>
+          <div class="mc-icon ic-rose">⏳</div>
+          <div class="mc-lbl">รอตรวจสอบ</div>
+          <div class="mc-val" id="m-pending">—</div>
+          <div class="mc-sub">ยังไม่ได้รับรอง</div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">ประเภทผู้ได้รับรางวัล</span></div>
+          <div class="chart-wrap" style="height:210px;">
+            <canvas id="ch-type" role="img" aria-label="กราฟวงกลมประเภทผู้รับรางวัล"></canvas>
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">ระดับรางวัล</span></div>
+          <div class="chart-wrap" style="height:210px;">
+            <canvas id="ch-level" role="img" aria-label="กราฟแท่งระดับรางวัล"></canvas>
+          </div>
+        </div>
+        <div class="chart-box chart-box-full">
+          <div class="chart-head"><span class="chart-title">จำนวนรางวัลรายปีการศึกษา</span></div>
+          <div class="chart-wrap" style="height:170px;">
+            <canvas id="ch-year" role="img" aria-label="กราฟรายปี"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">10 โรงเรียนที่มีรางวัลมากที่สุด</div>
+        <div id="top-schools">
+          <div class="empty-state"><div class="empty-icon">🏫</div><div class="empty-text">กำลังโหลดข้อมูล...</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TABLE ══ -->
+    <div id="page-table" class="page">
+      <div class="page-header">
+        <div class="page-title"><div class="page-title-icon">📋</div>ตารางข้อมูลรางวัล</div>
+      </div>
+      <div class="filter-bar">
+        <input type="text" id="f-search" placeholder="🔍 ค้นหาชื่อ รางวัล โรงเรียน..." oninput="renderTable()"/>
+        <select id="f-year" onchange="renderTable()">
+          <option value="">ทุกปีการศึกษา</option>
+          <option>2567</option><option>2568</option><option>2569</option>
+        </select>
+        <select id="f-type" onchange="renderTable()">
+          <option value="">ทุกประเภท</option>
+          <option>ครู</option><option>นักเรียน</option>
+          <option>ผู้บริหารสถานศึกษา</option><option>โรงเรียน</option>
+        </select>
+        <select id="f-level" onchange="renderTable()">
+          <option value="">ทุกระดับ</option>
+          <option>โรงเรียน</option><option>กลุ่มเครือข่าย</option>
+          <option>เขตพื้นที่</option><option>จังหวัด</option>
+          <option>ภาค</option><option>ประเทศ</option><option>นานาชาติ</option>
+        </select>
+        <select id="f-vstatus" onchange="renderTable()">
+          <option value="">ทุกสถานะ</option>
+          <option>รอตรวจสอบ</option><option>ข้อมูลครบถ้วน</option>
+          <option>ต้องแก้ไข</option><option>หลักฐานไม่ครบ</option>
+          <option>รับรองข้อมูลแล้ว</option>
+        </select>
+      </div>
+      <div class="tbl-card">
+        <div class="tbl-wrap" id="tbl-wrap">
+          <div class="empty-state"><div class="empty-icon">📂</div><div class="empty-text">กำลังโหลดข้อมูล...</div></div>
+        </div>
+      </div>
+      <p id="tbl-count" style="font-size:12px;color:var(--muted);margin-top:6px;"></p>
+    </div>
+
+    <!-- ══ ADD FORM ══ -->
+    <div id="page-addform" class="page">
+      <div class="page-header">
+        <div class="page-title"><div class="page-title-icon">➕</div>เพิ่มข้อมูลรางวัล</div>
+      </div>
+      <div class="tip">
+        📌 ข้อมูลจะถูกส่งไปยัง Google Sheets ผ่าน Apps Script ทันที กรุณากรอกให้ครบทุกช่องที่มี <span class="req">*</span> ครับ
+      </div>
+
+      <!-- ตอนที่ 1 -->
+      <div class="card">
+        <div class="form-section-header">
+          <div class="form-section-num">1</div>
+          <div class="form-section-title">ข้อมูลโรงเรียน</div>
+        </div>
+        <div class="form-grid">
+          <div class="fg">
+            <label>ปีการศึกษา <span class="req">*</span></label>
+            <select id="in-year"><option>2569</option><option>2568</option><option>2567</option></select>
+          </div>
+          <div class="fg">
+            <label>ชื่อโรงเรียน <span class="req">*</span></label>
+            <input type="text" id="in-school" placeholder="โรงเรียนบ้านตัวอย่าง"/>
+          </div>
+          <div class="fg">
+            <label>อำเภอ/กลุ่มเครือข่าย <span class="req">*</span></label>
+            <input type="text" id="in-area" placeholder="เช่น แม่แจ่ม"/>
+          </div>
+          <div class="fg">
+            <label>เบอร์โทรศัพท์</label>
+            <input type="text" id="in-tel" placeholder="08X-XXX-XXXX"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- ตอนที่ 2 -->
+      <div class="card">
+        <div class="form-section-header">
+          <div class="form-section-num">2</div>
+          <div class="form-section-title">ผู้ได้รับรางวัล</div>
+        </div>
+        <div class="form-grid">
+          <div class="fg">
+            <label>ประเภทผู้ได้รับรางวัล <span class="req">*</span></label>
+            <select id="in-rtype"><option>ครู</option><option>นักเรียน</option><option>ผู้บริหารสถานศึกษา</option><option>โรงเรียน</option></select>
+          </div>
+          <div class="fg">
+            <label>คำนำหน้า</label>
+            <select id="in-prefix" onchange="toggleOther(this,'in-prefix-other')">
+              <option>นาย</option><option>นาง</option><option>นางสาว</option>
+              <option>ด.ช.</option><option>ด.ญ.</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+            <input type="text" class="other-input" id="in-prefix-other" placeholder="โปรดระบุคำนำหน้า..."/>
+          </div>
+          <div class="fg">
+            <label>ชื่อ-นามสกุล <span class="req">*</span></label>
+            <input type="text" id="in-name" placeholder="ชื่อเต็มตามเกียรติบัตร"/>
+          </div>
+          <div class="fg">
+            <label>ตำแหน่ง/ระดับชั้น</label>
+            <input type="text" id="in-pos" placeholder="เช่น ครูผู้สอน, ผู้อำนวยการ, ป.5"/>
+          </div>
+          <div class="fg full">
+            <label>กลุ่มสาระ/งานที่เกี่ยวข้อง</label>
+            <select id="in-subject" onchange="toggleOther(this,'in-subject-other')">
+              <option value="">— ไม่ระบุ —</option>
+              <option>ภาษาไทย</option><option>คณิตศาสตร์</option>
+              <option>วิทยาศาสตร์และเทคโนโลยี</option>
+              <option>สังคมศึกษา ศาสนา และวัฒนธรรม</option>
+              <option>สุขศึกษาและพลศึกษา</option><option>ศิลปะ</option>
+              <option>การงานอาชีพ</option><option>ภาษาต่างประเทศ</option>
+              <option>ปฐมวัย</option><option>บริหารงานวิชาการ</option>
+              <option>บริหารงานทั่วไป</option><option>กิจกรรมพัฒนาผู้เรียน</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+            <input type="text" class="other-input" id="in-subject-other" placeholder="โปรดระบุกลุ่มสาระ/งาน..."/>
+          </div>
+        </div>
+      </div>
+
+      <!-- ตอนที่ 3 -->
+      <div class="card">
+        <div class="form-section-header">
+          <div class="form-section-num">3</div>
+          <div class="form-section-title">รายละเอียดรางวัล</div>
+        </div>
+        <div class="form-grid">
+          <div class="fg full">
+            <label>ชื่อรางวัล <span class="req">*</span></label>
+            <input type="text" id="in-awardname" placeholder="ระบุชื่อรางวัลเต็มตามเกียรติบัตรหรือประกาศ"/>
+          </div>
+          <div class="fg">
+            <label>ประเภทของรางวัล</label>
+            <select id="in-atype" onchange="toggleOther(this,'in-atype-other')">
+              <option>ด้านวิชาการ</option><option>นวัตกรรม</option>
+              <option>การจัดการเรียนรู้</option><option>การบริหาร</option>
+              <option>คุณธรรม</option><option>กีฬา</option><option>ศิลปะ</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+            <input type="text" class="other-input" id="in-atype-other" placeholder="โปรดระบุประเภทรางวัล..."/>
+          </div>
+          <div class="fg">
+            <label>ระดับรางวัล <span class="req">*</span></label>
+            <select id="in-level">
+              <option>โรงเรียน</option><option>กลุ่มเครือข่าย</option>
+              <option>เขตพื้นที่</option><option>จังหวัด</option>
+              <option>ภาค</option><option>ประเทศ</option><option>นานาชาติ</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>ผลรางวัลที่ได้รับ <span class="req">*</span></label>
+            <select id="in-result" onchange="toggleOther(this,'in-result-other')">
+              <option>ชนะเลิศ</option><option>รองชนะเลิศอันดับ 1</option>
+              <option>รองชนะเลิศอันดับ 2</option><option>เหรียญทอง</option>
+              <option>เหรียญเงิน</option><option>เหรียญทองแดง</option>
+              <option>ดีเยี่ยม</option><option>ดีเด่น</option><option>ดี</option>
+              <option>ผ่านการคัดเลือก</option><option>ได้รับการยกย่อง</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+            <input type="text" class="other-input" id="in-result-other" placeholder="โปรดระบุผลรางวัล..."/>
+          </div>
+          <div class="fg">
+            <label>หน่วยงานที่มอบรางวัล <span class="req">*</span></label>
+            <input type="text" id="in-org" placeholder="เช่น สพป.เชียงใหม่ เขต 2"/>
+          </div>
+          <div class="fg">
+            <label>วันที่ได้รับรางวัล</label>
+            <input type="date" id="in-date"/>
+          </div>
+          <div class="fg full">
+            <label>รายละเอียดผลงานโดยย่อ</label>
+            <textarea id="in-desc" placeholder="สรุปสั้น ๆ ว่ารางวัลนี้เกี่ยวกับอะไร ผลงานคืออะไร"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ตอนที่ 4 -->
+      <div class="card">
+        <div class="form-section-header">
+          <div class="form-section-num">4</div>
+          <div class="form-section-title">หลักฐานประกอบ</div>
+        </div>
+        <div class="form-grid">
+          <div class="fg">
+            <label>ประเภทหลักฐาน</label>
+            <select id="in-evtype" onchange="toggleOther(this,'in-evtype-other')">
+              <option>เกียรติบัตร</option><option>ประกาศผลการแข่งขัน</option>
+              <option>หนังสือราชการ/คำสั่ง</option><option>ภาพถ่ายการรับรางวัล</option>
+              <option>ลิงก์เว็บไซต์/เพจ</option><option>รายงานผลงาน/แฟ้มสะสมงาน</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+            <input type="text" class="other-input" id="in-evtype-other" placeholder="โปรดระบุประเภทหลักฐาน..."/>
+          </div>
+          <div class="fg">
+            <label>ลิงก์หลักฐาน (Google Drive / URL)</label>
+            <input type="text" id="in-evlink" placeholder="https://drive.google.com/..."/>
+          </div>
+          <div class="fg full">
+            <label>สถานะการตรวจสอบ</label>
+            <select id="in-vstatus">
+              <option>รอตรวจสอบ</option><option>ข้อมูลครบถ้วน</option>
+              <option>ต้องแก้ไข</option><option>หลักฐานไม่ครบ</option>
+              <option>รับรองข้อมูลแล้ว</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-submit" onclick="submitAward()">
+        ✉️ &nbsp;บันทึกข้อมูลรางวัลลง Google Sheets
+      </button>
+      <div id="sub-status" class="status-msg"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ════ LOADING OVERLAY ════ -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div class="loading-title">กำลังบันทึกข้อมูล...</div>
+    <div class="loading-sub">กรุณารอสักครู่ ระบบกำลังส่งข้อมูลไปยัง Google Sheets</div>
+  </div>
+</div>
+
+<!-- ════ SUCCESS POPUP ════ -->
+<div class="popup-overlay" id="popup-overlay" onclick="closePopup()">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-icon">✅</div>
+    <div class="popup-title">บันทึกสำเร็จแล้ว!</div>
+    <div class="popup-msg" id="popup-msg">บันทึกข้อมูลลง Google Sheets เรียบร้อยแล้วครับ</div>
+    <button class="popup-btn" onclick="closePopup()">ตกลง</button>
+  </div>
+</div>
+
+<!-- ════ EVIDENCE PREVIEW POPUP ════ -->
+<div class="ev-overlay" id="ev-overlay" onclick="closeEvidence()">
+  <div class="ev-box" onclick="event.stopPropagation()">
+    <div class="ev-header">
+      <div class="ev-header-left">
+        <div class="ev-title" id="ev-title">หลักฐานประกอบ</div>
+        <div class="ev-sub" id="ev-sub"></div>
+      </div>
+      <div class="ev-header-right">
+        <a id="ev-open-link" href="#" target="_blank" class="ev-btn-open">
+          🔗 เปิดในแท็บใหม่
+        </a>
+        <button class="ev-close" onclick="closeEvidence()">✕</button>
+      </div>
+    </div>
+    <div class="ev-body" id="ev-body">
+      <div class="ev-fallback">
+        <div class="ev-fallback-icon">📄</div>
+        <div class="ev-fallback-text">กำลังโหลดหลักฐาน...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  CONFIG — แก้ไขค่า 2 บรรทัดนี้ให้ตรงกับ Google Sheets ของคุณ
+//  แล้วอัปโหลดไฟล์ขึ้น GitHub Pages ใหม่ทุกครั้งที่เปลี่ยน
+// ════════════════════════════════════════════════════
+const SHEET_ID   = '1gBZBAMf6PtMqgEzr-GGzpKci3XKCTl5fad7V7RZwA-8';
+const SHEET_NAME = 'รางวัล';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsCv_cl8Fwz8i6C7SRo9PiWjuPyWQo19iZbf8LDCJz0VOewp1wDE4dL6eLayxvGjW7mw/exec';
+// ════════════════════════════════════════════════════
+
+let awards = [], charts = {};
+
+// ── Navigation ──
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => {
+    if ((b.getAttribute('onclick') || '').includes(name)) b.classList.add('active');
+  });
+}
+
+// ── Toggle ช่อง "อื่น ๆ" ──
+function toggleOther(sel, inputId) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  if (sel.value === 'อื่น ๆ') { inp.classList.add('show'); inp.focus(); }
+  else { inp.classList.remove('show'); inp.value = ''; }
+}
+
+// ── โหลดข้อมูลจาก Apps Script ──
+async function loadData() {
+  setBadge('loading');
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=read&t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    if (!Array.isArray(raw) || raw.length < 2) {
+      awards = []; updateAll(); setBadge('ok', '0 รายการ'); return;
+    }
+    const hdrs = raw[0].map(h => String(h).trim());
+    awards = raw.slice(1).map(row => {
+      const o = {}; hdrs.forEach((h, i) => o[h] = String(row[i] ?? '').trim());
+      return mapRow(o);
+    }).filter(a => a.name || a.school);
+    updateAll();
+    setBadge('ok', awards.length + ' รายการ');
+  } catch(e) {
+    setBadge('error', e.message);
+  }
+}
+
+function mapRow(o) {
+  return {
+    year:     o['ปีการศึกษา']||'',
+    school:   o['ชื่อโรงเรียน']||'',
+    area:     o['อำเภอ/กลุ่มเครือข่าย']||'',
+    rtype:    o['ประเภทผู้ได้รับรางวัล']||'',
+    prefix:   o['คำนำหน้า']||'',
+    name:     o['ชื่อ-นามสกุล']||'',
+    pos:      o['ตำแหน่ง/ระดับชั้น']||'',
+    subject:  o['กลุ่มสาระ/งานที่เกี่ยวข้อง']||'',
+    awardname:o['ชื่อรางวัล']||'',
+    atype:    o['ประเภทรางวัล']||'',
+    level:    o['ระดับรางวัล']||'',
+    result:   o['ผลรางวัล']||'',
+    org:      o['หน่วยงานที่มอบ']||'',
+    date:     o['วันที่ได้รับรางวัล']||'',
+    desc:     o['รายละเอียดผลงานโดยย่อ']||'',
+    evtype:   o['ประเภทหลักฐาน']||'',
+    evlink:   o['ลิงก์หลักฐาน']||'',
+    tel:      o['เบอร์โทรศัพท์']||'',
+    vstatus:  o['สถานะการตรวจสอบ']||'รอตรวจสอบ',
+  };
+}
+
+function setBadge(state, msg) {
+  const el = document.getElementById('conn-badge');
+  const tx = document.getElementById('conn-text');
+  el.className = 'conn-pill';
+  if (state === 'ok')    { el.classList.add('ok');  tx.textContent = 'เชื่อมต่อแล้ว · ' + (msg||''); }
+  else if (state === 'error') { el.classList.add('err'); tx.textContent = 'เชื่อมต่อไม่ได้'; }
+  else tx.textContent = 'กำลังโหลด...';
+}
+
+function updateAll() {
+  updateMetrics(); renderCharts(); renderTable();
+  document.getElementById('sidebar-total').textContent = awards.length;
+}
+
+function updateMetrics() {
+  document.getElementById('m-total').textContent    = awards.length;
+  document.getElementById('m-schools').textContent  = new Set(awards.map(a => a.school).filter(Boolean)).size;
+  document.getElementById('m-national').textContent = awards.filter(a => ['ประเทศ','นานาชาติ'].includes(a.level)).length;
+  document.getElementById('m-pending').textContent  = awards.filter(a => a.vstatus === 'รอตรวจสอบ').length;
+
+  const sc = {};
+  awards.forEach(a => { if (a.school) sc[a.school] = (sc[a.school]||0) + 1; });
+  const sorted = Object.entries(sc).sort((a,b) => b[1]-a[1]).slice(0,10);
+  const max = sorted[0]?.[1] || 1;
+  document.getElementById('top-schools').innerHTML = sorted.length
+    ? sorted.map(([s,c],i) => `
+        <div class="bar-item">
+          <div class="bar-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+          <div class="bar-info">
+            <div class="bar-name">${s}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%"></div></div>
+          </div>
+          <div class="bar-count">${c}</div>
+        </div>`).join('')
+    : '<div class="empty-state"><div class="empty-icon">🏫</div><div class="empty-text">ยังไม่มีข้อมูล</div></div>';
+}
+
+function renderCharts() {
+  const mk = (id, cfg) => { if (charts[id]) charts[id].destroy(); charts[id] = new Chart(document.getElementById(id), cfg); };
+  const font = { family: 'Sarabun', size: 12 };
+
+  const types = ['ครู','นักเรียน','ผู้บริหารสถานศึกษา','โรงเรียน'];
+  mk('ch-type', { type:'doughnut', data:{ labels:types, datasets:[{ data:types.map(t=>awards.filter(a=>a.rtype===t).length), backgroundColor:['#0e9e76','#2563c7','#e8a020','#6b3fc7'], borderWidth:0, hoverOffset:6 }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:true, position:'bottom', labels:{ font, color:'#4a5568', boxWidth:11, padding:14 }}}}});
+
+  const levels = ['โรงเรียน','กลุ่มเครือข่าย','เขตพื้นที่','จังหวัด','ภาค','ประเทศ','นานาชาติ'];
+  mk('ch-level', { type:'bar', data:{ labels:levels, datasets:[{ data:levels.map(l=>awards.filter(a=>a.level===l).length), backgroundColor:['#c8d8f5','#a5c0ef','#7da8e8','#5490e0','#2b76d8','#1b5fb8','#0f3d8a'], borderRadius:5 }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1, color:'#888', font }, grid:{ color:'rgba(0,0,0,.05)' }}, x:{ ticks:{ color:'#888', font:{ family:'Sarabun', size:11 }}, grid:{ display:false }}}}});
+
+  const years = ['2567','2568','2569'];
+  mk('ch-year', { type:'bar', data:{ labels:years, datasets:[{ data:years.map(y=>awards.filter(a=>a.year===y).length), backgroundColor:['#b6ccef','#4a8ee0','#1b4f9b'], borderRadius:7, barThickness:54 }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1, color:'#888', font }, grid:{ color:'rgba(0,0,0,.05)' }}, x:{ ticks:{ color:'#888', font:{ family:'Sarabun', size:13 }}, grid:{ display:false }}}}});
+}
+
+// ── ตาราง ──
+const lvB = l => ({'โรงเรียน':'badge-area','กลุ่มเครือข่าย':'badge-area','เขตพื้นที่':'badge-area','จังหวัด':'badge-province','ภาค':'badge-region','ประเทศ':'badge-national','นานาชาติ':'badge-inter'}[l]||'badge-area');
+const rtB = t => ({'ครู':'badge-teacher','นักเรียน':'badge-student','ผู้บริหารสถานศึกษา':'badge-admin','โรงเรียน':'badge-school'}[t]||'badge-area');
+const stB = s => ({'รับรองข้อมูลแล้ว':'badge-ok','ข้อมูลครบถ้วน':'badge-ok','รอตรวจสอบ':'badge-wait','ต้องแก้ไข':'badge-fix','หลักฐานไม่ครบ':'badge-fix'}[s]||'badge-wait');
+
+function renderTable() {
+  const q  = (document.getElementById('f-search').value||'').toLowerCase();
+  const yr = document.getElementById('f-year').value;
+  const tp = document.getElementById('f-type').value;
+  const lv = document.getElementById('f-level').value;
+  const st = document.getElementById('f-vstatus').value;
+  const f  = awards.filter(a =>
+    (!q  || (a.name+a.school+a.awardname+a.org).toLowerCase().includes(q)) &&
+    (!yr || a.year===yr) && (!tp || a.rtype===tp) &&
+    (!lv || a.level===lv) && (!st || a.vstatus===st));
+  document.getElementById('tbl-count').textContent = f.length ? `แสดง ${f.length} จาก ${awards.length} รายการ` : '';
+  if (!f.length) {
+    document.getElementById('tbl-wrap').innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">ไม่พบข้อมูลที่ค้นหา</div></div>';
+    return;
+  }
+  document.getElementById('tbl-wrap').innerHTML = `<table>
+    <thead><tr>
+      <th style="width:52px">ปี</th><th style="width:150px">โรงเรียน</th>
+      <th style="width:78px">ประเภท</th><th style="width:140px">ชื่อ-นามสกุล</th>
+      <th>ชื่อรางวัล</th><th style="width:78px">ระดับ</th>
+      <th style="width:90px">ผลรางวัล</th><th style="width:90px">สถานะ</th>
+      <th style="width:90px">หลักฐาน</th>
+    </tr></thead>
+    <tbody>${f.map((a) => {
+      const realIdx = awards.indexOf(a);
+      return `<tr>
+        <td>${a.year}</td>
+        <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${a.school}">${a.school}</td>
+        <td><span class="badge ${rtB(a.rtype)}">${a.rtype}</span></td>
+        <td style="white-space:nowrap;">${a.prefix} ${a.name}</td>
+        <td style="font-size:12px;" title="${a.awardname}">${a.awardname}</td>
+        <td><span class="badge ${lvB(a.level)}">${a.level}</span></td>
+        <td style="font-size:12px;">${a.result}</td>
+        <td><span class="badge ${stB(a.vstatus)}">${a.vstatus}</span></td>
+        <td>${a.evlink && a.evlink.trim()
+          ? `<button class="btn-ev" onclick="openEvidence(${realIdx})">📎 ดูหลักฐาน</button>`
+          : `<span class="btn-ev-none">— ไม่มี —</span>`
+        }</td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+// ── Evidence Preview ──
+function getDriveEmbedUrl(url) {
+  if (!url) return null;
+  // แปลง Google Drive URL เป็น embed URL
+  // รองรับหลายรูปแบบ URL ของ Google Drive
+  let fileId = null;
+
+  // รูปแบบ: /file/d/FILE_ID/view หรือ /file/d/FILE_ID/edit
+  const m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m1) fileId = m1[1];
+
+  // รูปแบบ: id=FILE_ID
+  if (!fileId) {
+    const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (m2) fileId = m2[1];
+  }
+
+  // รูปแบบ: /open?id=FILE_ID
+  if (!fileId) {
+    const m3 = url.match(/open\?id=([a-zA-Z0-9_-]+)/);
+    if (m3) fileId = m3[1];
+  }
+
+  if (fileId) {
+    return `https://drive.google.com/file/d/${fileId}/preview`;
+  }
+
+  // ถ้าไม่ใช่ Google Drive ให้ใช้ URL ตรงๆ (เว็บไซต์ทั่วไป)
+  return url;
+}
+
+function openEvidence(idx) {
+  const a = awards[idx];
+  if (!a || !a.evlink) return;
+
+  const embedUrl = getDriveEmbedUrl(a.evlink);
+  const displayName = (a.prefix ? a.prefix + ' ' : '') + a.name;
+
+  document.getElementById('ev-title').textContent = a.awardname || 'หลักฐานประกอบ';
+  document.getElementById('ev-sub').textContent   = `${displayName} · ${a.evtype || 'หลักฐาน'} · ${a.school}`;
+  document.getElementById('ev-open-link').href    = a.evlink;
+
+  // แสดง iframe preview
+  document.getElementById('ev-body').innerHTML = `
+    <iframe class="ev-iframe" src="${embedUrl}"
+      allow="autoplay"
+      onload="this.style.opacity=1"
+      onerror="showEvFallback('${a.evlink}')"
+      style="opacity:0;transition:opacity .3s;">
+    </iframe>
+    <script>
+      setTimeout(() => {
+        const f = document.querySelector('.ev-iframe');
+        if (f) f.style.opacity = '1';
+      }, 1500);
+    <\/script>`;
+
+  document.getElementById('ev-overlay').classList.add('show');
+}
+
+function showEvFallback(url) {
+  document.getElementById('ev-body').innerHTML = `
+    <div class="ev-fallback">
+      <div class="ev-fallback-icon">🔗</div>
+      <div class="ev-fallback-text">
+        ไม่สามารถแสดงตัวอย่างได้โดยตรง<br>
+        อาจเป็นเพราะไฟล์ยังไม่ได้ตั้งค่าเป็น "ทุกคนที่มีลิงก์"<br><br>
+        <strong>กด "เปิดในแท็บใหม่" เพื่อดูไฟล์ได้เลยครับ</strong>
+      </div>
+    </div>`;
+}
+
+function closeEvidence() {
+  document.getElementById('ev-overlay').classList.remove('show');
+  document.getElementById('ev-body').innerHTML = '';
+}
+
+// ── ดึงค่าจาก select — ถ้าเลือก "อื่น ๆ" ให้ใช้ค่าจาก input แทน ──
+function getVal(selectId) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return '';
+  if (sel.tagName === 'SELECT' && sel.value === 'อื่น ๆ') {
+    const inp = document.getElementById(selectId + '-other');
+    return inp ? (inp.value.trim() || 'อื่น ๆ') : 'อื่น ๆ';
+  }
+  return sel.value.trim();
+}
+
+// ── Loading overlay ──
+function showLoading() { document.getElementById('loading-overlay').classList.add('show'); }
+function hideLoading() { document.getElementById('loading-overlay').classList.remove('show'); }
+
+// ── Success popup ──
+function showPopup(name, award) {
+  document.getElementById('popup-msg').innerHTML =
+    `บันทึกข้อมูลรางวัลของ <span class="popup-name">${name}</span><br>
+     "<span class="popup-name">${award}</span>"<br>
+     ลง Google Sheets เรียบร้อยแล้วครับ 🎉`;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+function closePopup() {
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+// ── บันทึกข้อมูล ──
+async function submitAward() {
+  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const required = [
+    ['in-year','ปีการศึกษา'],['in-school','ชื่อโรงเรียน'],
+    ['in-area','อำเภอ/กลุ่มเครือข่าย'],['in-name','ชื่อ-นามสกุล'],
+    ['in-awardname','ชื่อรางวัล'],['in-org','หน่วยงานที่มอบ']
+  ];
+  for (const [id, lbl] of required) {
+    if (!g(id)) { showMsg('sub-status','warning','⚠️ กรุณากรอก "'+lbl+'" ก่อนนะครับ'); return; }
+  }
+
+  const row = {
+    year:     g('in-year'),    school:  g('in-school'),  area:   g('in-area'),
+    rtype:    g('in-rtype'),   prefix:  getVal('in-prefix'),  name:   g('in-name'),
+    pos:      g('in-pos'),     subject: getVal('in-subject'),
+    awardname:g('in-awardname'), atype: getVal('in-atype'),
+    level:    g('in-level'),   result:  getVal('in-result'),
+    org:      g('in-org'),     date:    g('in-date'),    desc:   g('in-desc'),
+    evtype:   getVal('in-evtype'), evlink: g('in-evlink'),
+    tel:      g('in-tel'),     vstatus: g('in-vstatus'), filler: ''
+  };
+
+  // แสดง loading overlay ทันที ก่อนส่งข้อมูล
+  showLoading();
+
+  try {
+    const res = await fetch(SCRIPT_URL + '?' + new URLSearchParams(row));
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    awards.push(mapRow({
+      'ปีการศึกษา':row.year, 'ชื่อโรงเรียน':row.school, 'อำเภอ/กลุ่มเครือข่าย':row.area,
+      'ประเภทผู้ได้รับรางวัล':row.rtype, 'คำนำหน้า':row.prefix, 'ชื่อ-นามสกุล':row.name,
+      'ตำแหน่ง/ระดับชั้น':row.pos, 'กลุ่มสาระ/งานที่เกี่ยวข้อง':row.subject,
+      'ชื่อรางวัล':row.awardname, 'ประเภทรางวัล':row.atype, 'ระดับรางวัล':row.level,
+      'ผลรางวัล':row.result, 'หน่วยงานที่มอบ':row.org, 'วันที่ได้รับรางวัล':row.date,
+      'รายละเอียดผลงานโดยย่อ':row.desc, 'ประเภทหลักฐาน':row.evtype,
+      'ลิงก์หลักฐาน':row.evlink, 'เบอร์โทรศัพท์':row.tel, 'สถานะการตรวจสอบ':row.vstatus
+    }));
+
+    updateAll();
+    hideLoading();
+
+    // แสดง popup สำเร็จพร้อมชื่อและรางวัลที่บันทึก
+    const displayName = (row.prefix ? row.prefix + ' ' : '') + row.name;
+    showPopup(displayName, row.awardname);
+    clearForm();
+
+  } catch(e) {
+    hideLoading();
+    showMsg('sub-status','error','❌ ส่งข้อมูลไม่ได้: ' + e.message);
+  }
+}
+
+function clearForm() {
+  ['in-school','in-area','in-tel','in-name','in-pos','in-awardname',
+   'in-org','in-date','in-desc','in-evlink',
+   'in-prefix-other','in-subject-other','in-atype-other','in-result-other','in-evtype-other'
+  ].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.querySelectorAll('.other-input').forEach(el => el.classList.remove('show'));
+  // reset prefix กลับไปที่ค่าแรก
+  const prefix = document.getElementById('in-prefix');
+  if (prefix) prefix.selectedIndex = 0;
+}
+
+function showMsg(id, type, msg) {
+  const el = document.getElementById(id); if (!el) return;
+  el.className = 'status-msg ' + type;
+  el.textContent = msg;
+}
+
+// เริ่มโหลดข้อมูลทันทีที่หน้าเปิด
+loadData();
+</script>
+
+<!-- ════ FOOTER ════ -->
+<footer style="
+  background: linear-gradient(135deg, var(--navy), var(--blue2));
+  color: rgba(255,255,255,.75);
+  text-align: center;
+  padding: 16px 2rem;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: auto;
+">
+  <span style="color:rgba(255,255,255,.45); margin-right:6px;">⚙️</span>
+  พัฒนาระบบโดย
+  <strong style="color:#fff; margin: 0 4px;">ศน.เต็มสุข กฤตตภัคโภคิน</strong>
+  ศึกษานิเทศก์
+  <span style="color:rgba(255,255,255,.55); margin: 0 6px;">·</span>
+  สำนักงานเขตพื้นที่การศึกษาประถมศึกษาเชียงใหม่ เขต 2
+</footer>
+</body>
+</html>
